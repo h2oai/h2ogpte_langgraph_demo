@@ -2,10 +2,14 @@
 import os
 from typing import TypedDict
 
+from dotenv import load_dotenv
 from h2ogpte import H2OGPTEAsync
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import StateGraph
 from langgraph.types import interrupt
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 class CreditRenewalInput(TypedDict):
@@ -40,7 +44,7 @@ class OverallState(TypedDict):
 async def get_h2ogpte_client() -> H2OGPTEAsync:
     """Get configured h2oGPTE async client."""
     return H2OGPTEAsync(
-        address=os.getenv('H2OGPTE_URL', 'https://h2ogpte.genai.h2o.ai'),
+        address=os.getenv('H2OGPTE_URL', 'https://h2ogpte.internal.dedicated.h2o.ai '),  # fallback to internal dedicated
         api_key=os.getenv('H2OGPTE_API_KEY')
     )
 
@@ -94,10 +98,15 @@ async def ingest_renewal_alert(state: OverallState) -> OverallState:
 
 async def rag_policy(state: OverallState) -> OverallState:
     """RAG-Policy node: retrieves policy context."""
-    POLICY_COLLECTION_ID = "e00d5dfa-81a3-4244-90bf-9c15c1cf18c1"
+    policy_collection_id = os.getenv('POLICY_COLLECTION_ID')
+    if not policy_collection_id:
+        raise ValueError(
+            "POLICY_COLLECTION_ID environment variable not set. "
+            "Please check the README for setup instructions and ensure your .env file is configured correctly."
+        )
 
     try:
-        policy_content = await query_h2ogpte_rag(state['policy_query'], POLICY_COLLECTION_ID)
+        policy_content = await query_h2ogpte_rag(state['policy_query'], policy_collection_id)
         return {
             "policy_pack": f"Policy Analysis:\n{policy_content}",
             "accept_policy": False  # Reset acceptance when rerunning
@@ -111,10 +120,15 @@ async def rag_policy(state: OverallState) -> OverallState:
 
 async def rag_entity(state: OverallState) -> OverallState:
     """RAG-Entity node: retrieves borrower/entity data."""
-    ENTITY_COLLECTION_ID = "9f876cf7-c534-441a-9ae5-1f4d8d4b6cc2"
+    entity_collection_id = os.getenv('ENTITY_COLLECTION_ID')
+    if not entity_collection_id:
+        raise ValueError(
+            "ENTITY_COLLECTION_ID environment variable not set. "
+            "Please check the README for setup instructions and ensure your .env file is configured correctly."
+        )
 
     try:
-        entity_content = await query_h2ogpte_rag(state['entity_query'], ENTITY_COLLECTION_ID)
+        entity_content = await query_h2ogpte_rag(state['entity_query'], entity_collection_id)
         return {
             "entity_pack": f"Entity Analysis:\n{entity_content}",
             "accept_entity": False  # Reset acceptance when rerunning
@@ -128,10 +142,15 @@ async def rag_entity(state: OverallState) -> OverallState:
 
 async def rag_market(state: OverallState) -> OverallState:
     """RAG-Market node: retrieves market/sector data."""
-    MARKET_COLLECTION_ID = "fc5e2ebf-18b2-4e56-89de-1bb6e09396a3"
+    market_collection_id = os.getenv('MARKET_COLLECTION_ID')
+    if not market_collection_id:
+        raise ValueError(
+            "MARKET_COLLECTION_ID environment variable not set. "
+            "Please check the README for setup instructions and ensure your .env file is configured correctly."
+        )
 
     try:
-        market_content = await query_h2ogpte_rag(state['market_query'], MARKET_COLLECTION_ID)
+        market_content = await query_h2ogpte_rag(state['market_query'], market_collection_id)
         return {
             "market_pack": f"Market Analysis:\n{market_content}",
             "accept_market": False  # Reset acceptance when rerunning

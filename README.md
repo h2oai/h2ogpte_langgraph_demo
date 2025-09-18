@@ -3,23 +3,24 @@
 ## Getting Started
 
 1. Install [uv](https://docs.astral.sh/uv/#installation)
-2. Set up H2OGPTE API key (see [H2OGPTE Setup](#h2ogpte-setup) below)
-3. Set up your LANGSMITH API key (see [LangSmith Setup](#langsmith-setup) below) (optional)
-4. Run the app `uv run langgraph dev`
-5. Input
+2. Run `uv sync` to install all dependencies
+3. Set up h2oGPTe API key (see [h2oGPTe Setup](#h2ogpte-setup) below)
+4. Set up your LANGSMITH API key (see [LangSmith Setup](#langsmith-setup) below) (optional)
+5. Run the app `uv run langgraph dev`
+6. Input
 
 ```text
 Borrower Id: TechManufacture Inc
 Sector: Advanced Manufacturing
 ```
 
-## H2OGPTE Setup
+## h2oGPTe Setup
 
-This application requires an H2OGPTE API key to function. Follow these steps to configure it:
+This application requires an h2oGPTe API key to function. Follow these steps to configure it:
 
-### 1. Get Your H2OGPTE API Key
+### 1. Get Your h2oGPTe API Key
 
-- Generate or retrieve your API key from H2OGPTE
+- Generate or retrieve your API key from h2oGPTe
 
 ### 2. Configure h2oGPTe Env Variables
 
@@ -31,6 +32,18 @@ cp .env.example .env
 
 # Edit the .env file and add your API key
 H2OGPTE_API_KEY=your_actual_api_key_here
+```
+
+### 3. Set your h2oGPTe instance
+
+The demo is default in "internal-dedicated". If you wish to change environments, update the `.env`
+
+```bash
+# Edit the .env file to change h2oGPTe instance
+H2OGPTE_URL=your_h2ogpte_instance
+
+# Run the collection creation script
+python3 create_collections.py
 ```
 
 ## LangSmith Setup
