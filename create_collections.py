@@ -24,7 +24,7 @@ def main():
 
     # Initialize h2oGPTe client
     client = H2OGPTE(
-        address=os.getenv("H2OGPTE_URL", "https://h2ogpte.internal.dedicated.h2o.ai"),
+        address=os.getenv("H2OGPTE_URL", "https://h2ogpte.genai.h2o.ai"),
         api_key=os.getenv("H2OGPTE_API_KEY")
     )
 
@@ -87,16 +87,27 @@ def main():
             )
             print(f"   ✅ Created collection: {collection_id}")
 
-            # Ingest documents
+            # Upload and ingest documents
+            uploaded_files = []
             for doc_path in config["documents"]:
                 if os.path.exists(doc_path):
-                    print(f"   📄 Ingesting: {doc_path}")
-                    client.ingest_file(
-                        collection_id=collection_id,
-                        file_path=doc_path
-                    )
+                    print(f"   📄 Uploading: {doc_path}")
+                    # Upload the file first
+                    with open(doc_path, "rb") as f:
+                        upload_id = client.upload(os.path.basename(doc_path), f)
+                        uploaded_files.append(upload_id)
+                        print(f"   ✅ Uploaded: {upload_id}")
                 else:
                     print(f"   ⚠️  File not found: {doc_path}")
+
+            # Ingest all uploaded files into the collection
+            if uploaded_files:
+                print(f"   📄 Ingesting {len(uploaded_files)} files into collection...")
+                client.ingest_uploads(
+                    collection_id=collection_id,
+                    upload_ids=uploaded_files
+                )
+                print(f"   ✅ Ingested {len(uploaded_files)} files")
 
             created_collections[collection_name] = collection_id
 

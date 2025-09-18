@@ -36,7 +36,7 @@ H2OGPTE_API_KEY=your_actual_api_key_here
 
 ### 3. Set your h2oGPTe instance
 
-The demo is default in "internal-dedicated". If you wish to change environments, update the `.env`
+The demo defaults to h2oGPTe freemium version. If you wish to change environments, update the `.env`
 
 ```bash
 # Edit the .env file to change h2oGPTe instance

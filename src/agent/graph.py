@@ -44,7 +44,7 @@ class OverallState(TypedDict):
 async def get_h2ogpte_client() -> H2OGPTEAsync:
     """Get configured h2oGPTE async client."""
     return H2OGPTEAsync(
-        address=os.getenv('H2OGPTE_URL', 'https://h2ogpte.internal.dedicated.h2o.ai '),  # fallback to internal dedicated
+        address=os.getenv('H2OGPTE_URL', 'https://h2ogpte.genai.h2o.ai'),  # default to freemium
         api_key=os.getenv('H2OGPTE_API_KEY')
     )
 
