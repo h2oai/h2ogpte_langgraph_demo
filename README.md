@@ -7,12 +7,8 @@
 3. Set up h2oGPTe API key (see [h2oGPTe Setup](#h2ogpte-setup) below)
 4. Set up your LANGSMITH API key (see [LangSmith Setup](#langsmith-setup) below) (optional)
 5. Run the app `uv run langgraph dev`
-6. Input
-
-```text
-Borrower Id: TechManufacture Inc
-Sector: Advanced Manufacturing
-```
+6. Input in app `Borrower Id: TechManufacture Inc` and `Sector: Advanced Manufacturing`
+7. Input `true` or `false` to accept/reject at HITL stage
 
 ## h2oGPTe Setup
 
