@@ -3,10 +3,10 @@
 ## Getting Started
 
 1. Install [uv](https://docs.astral.sh/uv/#installation)
-2. Run `uv sync` to install all dependencies
-3. Set up h2oGPTe API key (see [h2oGPTe Setup](#h2ogpte-setup) below)
-4. Set up your LANGSMITH API key (see [LangSmith Setup](#langsmith-setup) below) (optional)
-5. Run the app `uv run langgraph dev`
+2. Run `make setup`
+3. Set your h2oGPTe API key (see [h2oGPTe Setup](#h2ogpte-setup) below for assistance)
+4. Set your LANGSMITH API key (see [LangSmith Setup](#langsmith-setup) below for assistance) (optional)
+5. Run the app `make run`
 6. Input in app `Borrower Id: TechManufacture Inc` and `Sector: Advanced Manufacturing`
 7. Input `true` or `false` to accept/reject at HITL stage
 
@@ -20,12 +20,7 @@ This application requires an h2oGPTe API key to function. Follow these steps to 
 
 ### 2. Configure h2oGPTe Env Variables
 
-Create a `.env` file in the project root directory:
-
 ```bash
-# Copy the example file
-cp .env.example .env
-
 # Edit the .env file and add your API key
 H2OGPTE_API_KEY=your_actual_api_key_here
 ```
@@ -37,9 +32,6 @@ The demo defaults to h2oGPTe freemium version. If you wish to change environment
 ```bash
 # Edit the .env file to change h2oGPTe instance
 H2OGPTE_URL=your_h2ogpte_instance
-
-# Run the collection creation script
-python3 create_collections.py
 ```
 
 ## LangSmith Setup
